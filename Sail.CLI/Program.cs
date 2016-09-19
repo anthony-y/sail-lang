@@ -11,8 +11,6 @@ namespace Sail.CLI
         static void Main(string[] args)
         {
             var run = new SailBackend("../../../sample.sail");
-
-            Console.ReadKey();
         }
     }
 }

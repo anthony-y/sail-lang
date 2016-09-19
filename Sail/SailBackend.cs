@@ -33,17 +33,17 @@ namespace Sail
 
             while (true)
             {
-                if (Console.ReadKey(true).Key == ConsoleKey.R)
+                var key = Console.ReadKey(true).Key;
+
+                if (key == ConsoleKey.R)
                 {
                     Console.Clear();
                     Reload(src);
                 }
 
-                if (Console.ReadKey(true).Key == ConsoleKey.Escape)
+                else if (key == ConsoleKey.Escape)
                     break;
             }
-
-            Console.ReadKey();
         }
     }
 }
