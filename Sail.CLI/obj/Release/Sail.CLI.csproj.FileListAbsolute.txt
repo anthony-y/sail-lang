@@ -1,0 +1,8 @@
+C:\Users\Anthony\Desktop\Sail\Sail.CLI\bin\Release\Sail.CLI.exe.config
+C:\Users\Anthony\Desktop\Sail\Sail.CLI\bin\Release\Sail.CLI.exe
+C:\Users\Anthony\Desktop\Sail\Sail.CLI\bin\Release\Sail.CLI.pdb
+C:\Users\Anthony\Desktop\Sail\Sail.CLI\bin\Release\Sail.dll
+C:\Users\Anthony\Desktop\Sail\Sail.CLI\bin\Release\Sail.pdb
+C:\Users\Anthony\Desktop\Sail\Sail.CLI\obj\Release\Sail.CLI.csprojResolveAssemblyReference.cache
+C:\Users\Anthony\Desktop\Sail\Sail.CLI\obj\Release\Sail.CLI.exe
+C:\Users\Anthony\Desktop\Sail\Sail.CLI\obj\Release\Sail.CLI.pdb

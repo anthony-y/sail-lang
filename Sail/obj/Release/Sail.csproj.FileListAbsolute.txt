@@ -1,0 +1,5 @@
+C:\Users\Anthony\Desktop\Sail\Sail\bin\Release\Sail.dll
+C:\Users\Anthony\Desktop\Sail\Sail\bin\Release\Sail.pdb
+C:\Users\Anthony\Desktop\Sail\Sail\obj\Release\Sail.dll
+C:\Users\Anthony\Desktop\Sail\Sail\obj\Release\Sail.pdb
+C:\Users\Anthony\Desktop\Sail\Sail\obj\Release\Sail.csprojResolveAssemblyReference.cache
