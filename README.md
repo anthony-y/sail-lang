@@ -2,13 +2,17 @@
 
 Sail is a toy programming language made for fun. It isn't finished yet.
 
+## Can you actually run Sail code at the moment?
+
+Yes.
+
 ## Should you use it?
 
 No.
 
 ## Why not?
 
-1. It's had less than 3 weeks of development time as I type this (19th Sep 2016)
+1. It's had just over 2 weeks of development time as I type this (19th Sep 2016)
 2. The syntax is not yet concrete. I'm still deciding if I like certain elements of it. It may change.
 3. Because there's loads of stuff missing.
 4. It's a toy langauge made for fun and to learn.
@@ -30,7 +34,16 @@ Yeah. Most of the language is missing :D
 
 ## Code example (syntax not concrete)
 
-```golang
+```go
+
+someFunction :: (someNumber: int) -> int {
+    print("Hi from someFunction");
+    puts("Your number is ");
+    puts(someNumber);
+
+    return someNumber;
+}
+
 main :: () -> void {
 
     // Explicit type variable declarartion
@@ -91,6 +104,8 @@ main :: () -> void {
         // "it" is an implicit variable which represents the current object of the iteration
         print(it);
     }
+
+    myNumber: int = someNumber(144);
 }
 ```
 
