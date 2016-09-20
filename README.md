@@ -21,7 +21,6 @@ No.
 
 - while loops
 - order of operations in maths expressions
-- else if branches
 - scope
 - user defined types
 - defer statement
