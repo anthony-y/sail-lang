@@ -67,6 +67,8 @@ namespace Sail.Parse
             RegisterPrefix(TokenType.IF, new IfParser());
             RegisterPrefix(TokenType.ELSE, new ElseParser());
 
+            RegisterPrefix(TokenType.ELSEIF, new ElseIfParser());
+
             RegisterPrefix(TokenType.FOR, new ForParser());
             RegisterInfix(TokenType.TO, new IteratorParser());
 

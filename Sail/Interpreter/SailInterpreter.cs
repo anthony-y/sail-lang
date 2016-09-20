@@ -247,10 +247,12 @@ namespace Sail.Interpreter
 
         public void Visit(IfExpression ifExpr)
         {
+            bool boolVal = false;
+
             if (ifExpr.IfCondition is ILiteralExpression)
             {
                 var val = ((ILiteralExpression)ifExpr.IfCondition).GetValue();
-                bool boolVal = Convert.ToBoolean(val);
+                boolVal = Convert.ToBoolean(val);
 
                 if (boolVal)
                     Visit(ifExpr.IfBlock);
@@ -268,12 +270,44 @@ namespace Sail.Interpreter
                 if (variable.Value == null)
                     throw new Exception("Cannot compare null object");
 
-                bool boolVal = Convert.ToBoolean(variable.Value);
+                boolVal = Convert.ToBoolean(variable.Value);
 
                 if (boolVal)
                     Visit(ifExpr.IfBlock);
-                else if (ifExpr.ElseBlock != null && !boolVal) Visit(ifExpr.ElseBlock.Block);
+
+                if (ifExpr.ElseBlock != null && !boolVal) Visit(ifExpr.ElseBlock.Block);
             }
+
+            BlockExpression elseIfBlock = null;
+            foreach (var elseIf in ifExpr.ElseIfs)
+            {
+                object varValue = null;
+
+                if (elseIf.Condition is IdentifierExpression)
+                {
+                    string name = ((IdentifierExpression)elseIf.Condition).Value;
+
+                    var variable = _variables.FirstOrDefault(v => v.Name == name);
+
+                    if (variable == null)
+                        throw new Exception("Variable not found in if condition!");
+
+                    if (variable.Value == null)
+                        throw new Exception("Cannot compare null object");
+
+                    varValue = variable.Value;
+                }
+
+                var elseIfValAsBool = Convert.ToBoolean(varValue);
+                if (elseIfValAsBool && !boolVal)
+                {
+                    elseIfBlock = elseIf.Block;
+                    break;
+                }
+            }
+
+            if (elseIfBlock != null && !boolVal) { Visit(elseIfBlock); return; }
+            if (elseIfBlock == null && !boolVal) Visit(ifExpr.ElseBlock);
         }
 
         public void Visit(ForExpression forExpr)

@@ -1,11 +1,5 @@
 // Todo before "released" to GitHub:
-//  - refactor print and puts to support function calls and stuff
 //  - scope
-
-// Implemented with dirty hacks
-//  - maths (no order of operations or division)
-//  - if statements (elseif not implemented)
-//  - for loops
 
 test_func :: (s: str, i: int, f: float, b: bool) -> void {
     print("Hi from test function!");
@@ -95,10 +89,22 @@ main :: () -> void {
     print(returnValue);
     
     cond := true;
+    cond_2 := false;
+    cond_3 := false; 
     if cond {
         print("\nCondition is true");
-    } else {
-        print("\nCondition is false");
+    }
+    
+    elseif cond_2 {
+        print("\nCondition 2 is true");
+    }
+
+    elseif cond_3 {
+        print("\nCondition 3 is true");
+    }
+    
+    else {
+        print("\nEVERYTHING IS FALSE");
     }
 
     nested_func :: () -> str { return "\nNested functions work :D\n"; }

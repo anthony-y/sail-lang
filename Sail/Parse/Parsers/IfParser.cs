@@ -20,14 +20,16 @@ namespace Sail.Parse.Parsers
             if (ifBlock == null)
                 throw new Exception("If statement is missing an if block");
 
-            var elseIfBlocks = new Dictionary<IExpression, BlockExpression>();
-            while (parser.TokenStream.Peek().Type == TokenType.ELSEIF)
+            var elseIfBlocks = new List<ElseIfExpression>();
+
+            if (parser.TokenStream.Peek().Type == TokenType.ELSEIF)
             {
-                var elseIfCondition = parser.ParseExpression(1);
+                while (parser.TokenStream.Peek().Type == TokenType.ELSEIF)
+                {
+                    var elseIfExpr = parser.ParseExpression(1);
 
-                //elseIfBlocks.Add(elseIfBlock as BlockExpression);
-
-                parser.TokenStream.Read();
+                    elseIfBlocks.Add((ElseIfExpression)elseIfExpr);
+                }
             }
 
             ElseExpression elseExpr = null;

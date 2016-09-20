@@ -12,16 +12,16 @@ namespace Sail.Parse.Expressions
     {
         public BlockExpression IfBlock { get; set; }
         public ElseExpression ElseBlock { get; set; }
-        public Dictionary<IExpression, BlockExpression> ElseIfBlocks { get; set; }
+        public List<ElseIfExpression> ElseIfs { get; set; }
 
         public IExpression IfCondition { get; private set; }
 
-        public IfExpression(BlockExpression ifBlock, IExpression ifCondition, 
-            Dictionary<IExpression, BlockExpression> elseIfBlocks, ElseExpression elseBlock = null)
+        public IfExpression(BlockExpression ifBlock, IExpression ifCondition,
+            List<ElseIfExpression> elseIfs, ElseExpression elseBlock = null)
         {
             IfBlock = ifBlock;
             ElseBlock = elseBlock;
-            ElseIfBlocks = elseIfBlocks;
+            ElseIfs = elseIfs;
             IfCondition = ifCondition;
         }
 
