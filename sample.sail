@@ -1,6 +1,3 @@
-// Todo before "released" to GitHub:
-//  - scope
-
 test_func :: (s: str, i: int, f: float, b: bool) -> void {
     print("Hi from test function!");
 
@@ -88,28 +85,27 @@ main :: () -> void {
     puts("returnValue: ");
     print(returnValue);
     
-    cond := true;
+    cond_1 := false;
     cond_2 := false;
-    cond_3 := false; 
-    if cond {
-        print("\nCondition is true");
-    }
-    
-    elseif cond_2 {
-        print("\nCondition 2 is true");
-    }
+    cond_3 := false;
 
-    elseif cond_3 {
-        print("\nCondition 3 is true");
-    }
-    
-    else {
-        print("\nEVERYTHING IS FALSE");
-    }
+    if cond_1     { print("\nCondition is true");   }
+
+    elseif cond_2 { print("\nCondition 2 is true"); }
+    elseif cond_3 { print("\nCondition 3 is true"); }
+
+    else          { print("\nEVERYTHING IS FALSE"); }
+
+    if false    { print("\nLiteral condition is true");   }
+
+    elseif true { print("\nLiteral condition 2 is true"); }
+    elseif false { print("\nLiteral condition 3 is true"); }
+
+    else          { print("\nEVERY LITERAL IS FALSE"); }
 
     nested_func :: () -> str { return "\nNested functions work :D\n"; }
 
-    print nested_func();
+    print(nested_func());
 
     goal := 10;
     for 1 to goal {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sail.Lexical
+﻿namespace Sail.Lexical
 {
     internal enum TokenType
     {
@@ -19,7 +13,9 @@ namespace Sail.Lexical
         EQUALTO,
         NOTEQUALTO,
         LESSTHAN,
+        LTHANEQUAL,
         GREATERTHAN,
+        GTHANEQUAL,
         PLUS,
         MINUS,
         MODULO,
@@ -62,6 +58,6 @@ namespace Sail.Lexical
         IF,
         ELSEIF,
         ELSE,
-        TYPE_OF
+        TYPE_OF,
     }
 }

@@ -15,7 +15,7 @@ No.
 1. It's had just over 2 weeks of development time as I type this (19th Sep 2016)
 2. The syntax is not yet concrete. I'm still deciding if I like certain elements of it. It may change.
 3. Because there's loads of stuff missing.
-4. It's a toy langauge made for fun and to learn.
+4. It's a toy language made for fun and to learn.
 
 ## What's missing?
 
