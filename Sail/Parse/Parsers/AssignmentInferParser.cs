@@ -32,6 +32,9 @@ namespace Sail.Parse.Parsers
             else if (value is FunctionCallExpression)
                 type = SailType.UNKNOWN;
 
+            else if (value is ComparisonExpression)
+                type = SailType.BOOL;
+
             else throw new Exception("Incorrect explicit variable declaration syntax!");
 
             return new AssignmentExpression(left, value, type);

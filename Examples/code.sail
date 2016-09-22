@@ -80,53 +80,37 @@ set_sail :: () -> str {
 
     test_func("This is a string", 1_000_000, 12.301, true);
 
+    print("Return values:");
+    print("--------------");
     returnValue: int = return_values(2815);
     puts("returnValue: ");
     print(returnValue);
-    
+
+    print("\nIf statements:");
+    print("--------------");    
     cond_1 := false;
     cond_2 := false;
     cond_3 := false;
 
     // With variables
     if cond_1 { 
-        print("\nCondition 1 is true");   
-    } 
-    
-    elseif cond_2 {
-        print("\nCondition 2 is true"); 
-    } 
-    
-    elseif cond_3 { 
-        print("\nCondition 3 is true"); 
+        print("Condition 1 is true");   
+    } elseif cond_2 {
+        print("Condition 2 is true"); 
+    } elseif cond_3 { 
+        print("Condition 3 is true"); 
+    } else { 
+        print("EVERYTHING IS FALSE");
     }
 
-    else { 
-        print("\nEVERYTHING IS FALSE"); 
-    }
+    nested_func :: () -> str { return "Nested functions work :D\n"; }
 
-    // With literals
-    if true { 
-        print("\nLiteral condition 1 is true");   
-    }
+    print("\nNested functions:");
+    print("-----------------");
+    print nested_func();
 
-    elseif false { 
-        print("\nLiteral condition 2 is true");
-    }
-
-    elseif true {
-        print("\nLiteral condition 3 is true"); 
-    }
-
-    else { 
-        print("\nEVERY LITERAL IS FALSE");
-    }
-
-    //wow: bool = 10 < 1;
-
-    nested_func :: () -> str { return "\nNested functions work :D\n"; }
-
-    print(nested_func());
+    print("For loops:");
+    print("----------");
 
     goal := 10;
     for 1 to goal {
@@ -136,6 +120,16 @@ set_sail :: () -> str {
         if it < goal {
             puts(", ");
         }
+    }
+
+    print("\n\nComparison operators:");
+    print("---------------------");
+
+    someBool: bool = 10 <= 10;
+    if someBool {
+        print("someBool is true");
+    } else {
+        print("someBool is false");
     }
 
     return "\n\nSail works!";

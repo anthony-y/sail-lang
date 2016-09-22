@@ -187,7 +187,7 @@ namespace Sail.Interpreter
 
             if (variable == null)
             {
-                var specificValue = TypeResolver.ToSpecificLiteral(assignment.Value as ILiteralExpression);
+                var specificValue = assignment.Value as ILiteralExpression;
 
                 if (assignment.Value is FunctionCallExpression)
                 {
@@ -217,7 +217,14 @@ namespace Sail.Interpreter
 
                     assignment.Type = TypeResolver.ToSailType(function.ReturnTypes[0].ToString());
 
-                } else varValue = specificValue.GetValue();
+                } else if (assignment.Value is ComparisonExpression)
+                {
+                    Visit(assignment.Value);
+
+                    varValue = (bool)_comparisonResults.Pop().Value;
+                }
+
+                else varValue = specificValue.GetValue();
 
                 _variables.Add(new SailObject(varName, varValue, assignment.Type));
             } else
