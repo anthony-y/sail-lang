@@ -14,6 +14,8 @@ namespace Sail.Lexical
         private int _line;
         private int _column;
 
+        internal string PathPrefix { get; private set; }
+
         private Dictionary<char, TokenType> _symbols = new Dictionary<char, TokenType>()
         {
             { ';', TokenType.SEMICOLON },  { '(', TokenType.OPAREN       },
@@ -45,6 +47,9 @@ namespace Sail.Lexical
             TokenStream = new TokenStream();
 
             _reader = new StreamReader(source);
+
+            int lastSlash = source.Replace('\\', '/').LastIndexOf('/');
+            PathPrefix = source.Substring(0, lastSlash + 1);
 
             _line = 1;
             _column = 1;

@@ -50,6 +50,7 @@
     <Compile Include="Lexical\TokenType.cs" />
     <Compile Include="Parse\Expressions\ElseExpression.cs" />
     <Compile Include="Parse\Expressions\ElseIfExpression.cs" />
+    <Compile Include="Parse\Expressions\FetchExpression.cs" />
     <Compile Include="Parse\Expressions\FloatAdditionExpression.cs" />
     <Compile Include="Parse\Expressions\AsCastExpression.cs" />
     <Compile Include="Parse\Expressions\AssignmentExpression.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Parse\Expressions\IteratorExpression.cs" />
     <Compile Include="Parse\Parsers\DivisionParser.cs" />
     <Compile Include="Parse\Parsers\ElseIfParser.cs" />
+    <Compile Include="Parse\Parsers\FetchParser.cs" />
     <Compile Include="Parse\Parsers\ForParser.cs" />
     <Compile Include="Parse\Expressions\FunctionCallExpression.cs" />
     <Compile Include="Parse\Expressions\FunctionExpression.cs" />

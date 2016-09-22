@@ -31,6 +31,11 @@ namespace Sail.Parse
             RegisterPrefix(TokenType.FLOATLITERAL, new LiteralParser());
             RegisterPrefix(TokenType.BOOLLITERAL, new LiteralParser());
 
+            RegisterInfix(TokenType.STRLITERAL, new LiteralParser());
+            RegisterInfix(TokenType.INTLITERAL, new LiteralParser());
+            RegisterInfix(TokenType.FLOATLITERAL, new LiteralParser());
+            RegisterInfix(TokenType.BOOLLITERAL, new LiteralParser());
+
             RegisterPrefix(TokenType.STR, new TypeNameParser());
             RegisterPrefix(TokenType.INT, new TypeNameParser());
             RegisterPrefix(TokenType.FLOAT, new TypeNameParser());
@@ -73,6 +78,8 @@ namespace Sail.Parse
             RegisterInfix(TokenType.TO, new IteratorParser());
 
             RegisterPrefix(TokenType.TYPE_OF, new TypeOfParser());
+
+            RegisterPrefix(TokenType.FETCH, new FetchParser());
         }
 
         public Token Expect(TokenType type)

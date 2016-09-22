@@ -15,7 +15,7 @@ namespace Sail
             var parser = new Parser(lexer);
             var ast = parser.Parse();
 
-            var interpreter = new SailInterpreter();
+            var interpreter = new SailInterpreter(lexer.PathPrefix);
 
             var stopwatch = Stopwatch.StartNew();
 

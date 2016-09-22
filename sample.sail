@@ -1,3 +1,5 @@
+fetch "sample_two";
+
 test_func :: (s: str, i: int, f: float, b: bool) -> void {
     print("Hi from test function!");
 
@@ -112,4 +114,6 @@ main :: () -> void {
         // "it" is an implicit variable which represents the current object of the iteration
         print(it);
     }
+
+    sample_two_func();
 }

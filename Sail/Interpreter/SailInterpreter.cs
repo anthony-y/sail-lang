@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Sail.Lexical;
 using Sail.Parse;
 using Sail.Parse.Expressions;
 
@@ -18,7 +19,11 @@ namespace Sail.Interpreter
 
         private Stack<SailType> _typeOfTypes;
 
-        public SailInterpreter()
+        private List<string> _usedFiles;
+
+        public string RelativePathPrefix { get; private set; }
+
+        public SailInterpreter(string relativePathPrefix)
         {
             _variables = new List<SailObject>();
             _functions = new List<SailFunction>();
@@ -26,6 +31,9 @@ namespace Sail.Interpreter
             _functionVariables = new Stack<SailObject>();
             _returnValues = new Stack<SailObject>();
             _typeOfTypes = new Stack<SailType>();
+            _usedFiles = new List<string>();
+
+            RelativePathPrefix = relativePathPrefix;
         }
 
         public void Visit(BlockExpression block)
@@ -357,6 +365,21 @@ namespace Sail.Interpreter
             }
         }
 
+        public void Visit(FetchExpression fetch)
+        {
+            string fileName = RelativePathPrefix + fetch.FileName + ".sail";
+
+            if (_usedFiles.Contains(fileName))
+                return;
+
+            var ast = new Parser(new Lexer(fileName)).Parse();
+
+            _usedFiles.Add(fileName);
+
+            foreach (var expr in ast)
+                Visit(expr);
+        }
+
         public void Visit(IExpression expr)
         {
             if (expr is AssignmentExpression)             Visit((AssignmentExpression)expr);
@@ -370,6 +393,7 @@ namespace Sail.Interpreter
             if (expr is TypeOfExpression)                 Visit((TypeOfExpression)expr);
             if (expr is IfExpression)                     Visit((IfExpression)expr);
             if (expr is ForExpression)                    Visit((ForExpression)expr);
+            if (expr is FetchExpression)                  Visit((FetchExpression)expr);
         }
 
         public void InvokeFunction(string name)
