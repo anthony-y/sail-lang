@@ -16,6 +16,7 @@ namespace Sail.Interpreter
 
         private Stack<SailObject> _functionVariables;
         private Stack<SailObject> _returnValues;
+        private Stack<SailObject> _comparisonResults;
 
         private Stack<SailType> _typeOfTypes;
 
@@ -32,6 +33,7 @@ namespace Sail.Interpreter
             _returnValues = new Stack<SailObject>();
             _typeOfTypes = new Stack<SailType>();
             _usedFiles = new List<string>();
+            _comparisonResults = new Stack<SailObject>();
 
             RelativePathPrefix = relativePathPrefix;
         }
@@ -278,6 +280,13 @@ namespace Sail.Interpreter
                 boolVal = Convert.ToBoolean(variable.Value);
             }
 
+            else if (ifExpr.IfCondition is ComparisonExpression)
+            {
+                Visit(ifExpr.IfCondition);
+
+                boolVal = (bool)_comparisonResults.Pop().Value;
+            }
+
             BlockExpression elseIfBlock = null;
             bool elseIfValAsBool = false;
 
@@ -302,6 +311,13 @@ namespace Sail.Interpreter
                 {
                     object val = ((ILiteralExpression)elseIf.Condition).GetValue();
                     elseIfValAsBool = Convert.ToBoolean(val);
+                }
+
+                else if (elseIf.Condition is ComparisonExpression)
+                {
+                    Visit(ifExpr.IfCondition);
+
+                    boolVal = (bool)_comparisonResults.Pop().Value;
                 }
 
                 if (elseIfValAsBool) { elseIfBlock = elseIf.Block; break; }
@@ -380,6 +396,92 @@ namespace Sail.Interpreter
                 Visit(expr);
         }
 
+        public void Visit(ComparisonExpression comparison)
+        {
+            object leftVal = null;
+            object rightVal = null;
+
+            // Left
+            if (comparison.Left is IntLiteralExpression)
+                leftVal = ((IntLiteralExpression)comparison.Left).Value;
+
+            else if (comparison.Left is FloatLiteralExpression)
+                leftVal = ((FloatLiteralExpression)comparison.Left).Value;
+
+            else if (comparison.Left is IdentifierExpression)
+            {
+                string name = ((IdentifierExpression)comparison.Left).Value;
+                var variable = _variables.FirstOrDefault(v => v.Name == name);
+
+                if (variable == null)
+                    throw new Exception("Can't compare non-existant variable!");
+
+                if (variable.Value == null)
+                    throw new Exception("Can't compare null valued variable!");
+
+                leftVal = variable.Value;
+            }
+
+            // Right
+            if (comparison.Right is IntLiteralExpression)
+                rightVal = ((IntLiteralExpression)comparison.Right).Value;
+
+            else if (comparison.Right is FloatLiteralExpression)
+                rightVal = ((FloatLiteralExpression)comparison.Right).Value;
+
+            else if (comparison.Right is IdentifierExpression)
+            {
+                string name = ((IdentifierExpression)comparison.Right).Value;
+                var variable = _variables.FirstOrDefault(v => v.Name == name);
+
+                if (variable == null)
+                    throw new Exception("Can't compare non-existant variable!");
+
+                if (variable.Value == null)
+                    throw new Exception("Can't compare null valued variable!");
+
+                rightVal = variable.Value;
+            }
+
+            if ((comparison.TokenType == TokenType.GREATERTHAN
+            || comparison.TokenType == TokenType.LESSTHAN
+            || comparison.TokenType == TokenType.GTHANEQUAL
+            || comparison.TokenType == TokenType.LTHANEQUAL) && leftVal is string
+            || rightVal is string)
+                throw new Exception("You can only use maths comparisons on number or variables!");
+
+            bool value = false;
+
+            switch (comparison.TokenType)
+            {
+                case TokenType.GREATERTHAN:
+                    value = Convert.ToSingle(leftVal) > Convert.ToSingle(rightVal);
+                    break;
+
+                case TokenType.LESSTHAN:
+                    value = Convert.ToSingle(leftVal) < Convert.ToSingle(rightVal);
+                    break;
+
+                case TokenType.EQUALTO:
+                    value = leftVal == rightVal;
+                    break;
+
+                case TokenType.NOTEQUALTO:
+                    value = leftVal != rightVal;
+                    break;
+
+                case TokenType.GTHANEQUAL:
+                    value = Convert.ToSingle(leftVal) >= Convert.ToSingle(rightVal);
+                    break;
+
+                case TokenType.LTHANEQUAL:
+                    value = Convert.ToSingle(leftVal) <= Convert.ToSingle(rightVal);
+                    break;
+            }
+
+            _comparisonResults.Push(new SailObject(null, value, SailType.BOOL));
+        }
+
         public void Visit(IExpression expr)
         {
             if (expr is AssignmentExpression)             Visit((AssignmentExpression)expr);
@@ -394,6 +496,7 @@ namespace Sail.Interpreter
             if (expr is IfExpression)                     Visit((IfExpression)expr);
             if (expr is ForExpression)                    Visit((ForExpression)expr);
             if (expr is FetchExpression)                  Visit((FetchExpression)expr);
+            if (expr is ComparisonExpression)             Visit((ComparisonExpression)expr);
         }
 
         public void InvokeFunction(string name)

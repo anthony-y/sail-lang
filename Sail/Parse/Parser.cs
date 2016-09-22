@@ -80,6 +80,13 @@ namespace Sail.Parse
             RegisterPrefix(TokenType.TYPE_OF, new TypeOfParser());
 
             RegisterPrefix(TokenType.FETCH, new FetchParser());
+
+            RegisterInfix(TokenType.EQUALTO, new ComparisonParser());
+            RegisterInfix(TokenType.NOTEQUALTO, new ComparisonParser());
+            RegisterInfix(TokenType.LESSTHAN, new ComparisonParser());
+            RegisterInfix(TokenType.GREATERTHAN, new ComparisonParser());
+            RegisterInfix(TokenType.LTHANEQUAL, new ComparisonParser());
+            RegisterInfix(TokenType.GTHANEQUAL, new ComparisonParser());
         }
 
         public Token Expect(TokenType type)

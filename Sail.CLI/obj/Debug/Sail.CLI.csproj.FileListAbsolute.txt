@@ -14,11 +14,11 @@ C:\Users\Anthony\Desktop\Sail - Copy\Sail.CLI\bin\Debug\Sail.CLI.pdb
 C:\Users\Anthony\Desktop\Sail - Copy\Sail.CLI\bin\Debug\Sail.dll
 C:\Users\Anthony\Desktop\Sail - Copy\Sail.CLI\bin\Debug\Sail.pdb
 C:\Users\Anthony\Desktop\Sail - Copy\Sail.CLI\obj\Debug\Sail.CLI.csprojResolveAssemblyReference.cache
-C:\Users\Anthony\Documents\sail-lang\Sail.CLI\bin\Debug\Sail.CLI.exe.config
-C:\Users\Anthony\Documents\sail-lang\Sail.CLI\obj\Debug\Sail.CLI.exe
-C:\Users\Anthony\Documents\sail-lang\Sail.CLI\obj\Debug\Sail.CLI.pdb
-C:\Users\Anthony\Documents\sail-lang\Sail.CLI\bin\Debug\Sail.CLI.exe
-C:\Users\Anthony\Documents\sail-lang\Sail.CLI\bin\Debug\Sail.CLI.pdb
-C:\Users\Anthony\Documents\sail-lang\Sail.CLI\bin\Debug\Sail.dll
-C:\Users\Anthony\Documents\sail-lang\Sail.CLI\bin\Debug\Sail.pdb
+C:\Users\Anthony\Documents\sail-lang\Sail.CLI\bin\Debug\sail.exe
+C:\Users\Anthony\Documents\sail-lang\Sail.CLI\bin\Debug\Sail-Lang.dll
+C:\Users\Anthony\Documents\sail-lang\Sail.CLI\bin\Debug\sail.exe.config
+C:\Users\Anthony\Documents\sail-lang\Sail.CLI\bin\Debug\sail.pdb
+C:\Users\Anthony\Documents\sail-lang\Sail.CLI\bin\Debug\Sail-Lang.pdb
 C:\Users\Anthony\Documents\sail-lang\Sail.CLI\obj\Debug\Sail.CLI.csprojResolveAssemblyReference.cache
+C:\Users\Anthony\Documents\sail-lang\Sail.CLI\obj\Debug\sail.exe
+C:\Users\Anthony\Documents\sail-lang\Sail.CLI\obj\Debug\sail.pdb

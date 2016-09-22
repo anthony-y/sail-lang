@@ -8,8 +8,8 @@ C:\Users\Anthony\Desktop\Sail - Copy\Sail\bin\Debug\Sail.pdb
 C:\Users\Anthony\Desktop\Sail - Copy\Sail\obj\Debug\Sail.csprojResolveAssemblyReference.cache
 C:\Users\Anthony\Desktop\Sail - Copy\Sail\obj\Debug\Sail.dll
 C:\Users\Anthony\Desktop\Sail - Copy\Sail\obj\Debug\Sail.pdb
-C:\Users\Anthony\Documents\sail-lang\Sail\bin\Debug\Sail.dll
-C:\Users\Anthony\Documents\sail-lang\Sail\bin\Debug\Sail.pdb
+C:\Users\Anthony\Documents\sail-lang\Sail\bin\Debug\Sail-Lang.dll
+C:\Users\Anthony\Documents\sail-lang\Sail\bin\Debug\Sail-Lang.pdb
 C:\Users\Anthony\Documents\sail-lang\Sail\obj\Debug\Sail.csprojResolveAssemblyReference.cache
-C:\Users\Anthony\Documents\sail-lang\Sail\obj\Debug\Sail.dll
-C:\Users\Anthony\Documents\sail-lang\Sail\obj\Debug\Sail.pdb
+C:\Users\Anthony\Documents\sail-lang\Sail\obj\Debug\Sail-Lang.dll
+C:\Users\Anthony\Documents\sail-lang\Sail\obj\Debug\Sail-Lang.pdb

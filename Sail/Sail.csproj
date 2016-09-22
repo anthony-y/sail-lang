@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sail</RootNamespace>
-    <AssemblyName>Sail</AssemblyName>
+    <AssemblyName>Sail-Lang</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -48,6 +48,7 @@
     <Compile Include="Lexical\Token.cs" />
     <Compile Include="Lexical\TokenStream.cs" />
     <Compile Include="Lexical\TokenType.cs" />
+    <Compile Include="Parse\Expressions\ComparisonExpression.cs" />
     <Compile Include="Parse\Expressions\ElseExpression.cs" />
     <Compile Include="Parse\Expressions\ElseIfExpression.cs" />
     <Compile Include="Parse\Expressions\FetchExpression.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Parse\Expressions\FloatLiteralExpression.cs" />
     <Compile Include="Parse\Expressions\ForExpression.cs" />
     <Compile Include="Parse\Expressions\IteratorExpression.cs" />
+    <Compile Include="Parse\Parsers\ComparisonParser.cs" />
     <Compile Include="Parse\Parsers\DivisionParser.cs" />
     <Compile Include="Parse\Parsers\ElseIfParser.cs" />
     <Compile Include="Parse\Parsers\FetchParser.cs" />
