@@ -1,4 +1,4 @@
-fetch "sample_two";
+fetch "code";
 
 main :: () -> void {
     print set_sail();

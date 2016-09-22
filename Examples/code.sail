@@ -1,5 +1,5 @@
 test_func :: (s: str, i: int, f: float, b: bool) -> void {
-    print("Hi from test function in sample_two.sail!");
+    print("Hi from test function in code.sail!");
 
     puts("\ns: ");
     print(s);
@@ -117,9 +117,7 @@ set_sail :: () -> str {
         // "it" is an implicit variable which represents the current object of the iteration
         puts(it);
 
-        if it < goal {
-            puts(", ");
-        }
+        if it < goal { puts(", "); }
     }
 
     print("\n\nComparison operators:");

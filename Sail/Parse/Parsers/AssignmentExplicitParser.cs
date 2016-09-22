@@ -36,6 +36,7 @@ namespace Sail.Parse.Parsers
             var valueExpr = parser.ParseExpression(GetPrecedence());
             var typeOfValue = TypeResolver.ToSailType(valueExpr as ILiteralExpression);
 
+            // DIRTY HACK
             if (!(valueExpr is FunctionCallExpression || valueExpr is ComparisonExpression))
                 if (typeOfValue != resolved)
                     throw new Exception("Type mismatch! Expecting " + resolved + " but got " + typeOfValue);
