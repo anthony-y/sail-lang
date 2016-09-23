@@ -22,9 +22,9 @@ namespace Sail.Lexical
             { ')', TokenType.CPAREN     }, { '[', TokenType.OBRACKET     },
             { ']', TokenType.CBRACKET   }, { '{', TokenType.OBRACE       },
             { '}', TokenType.CBRACE     }, { '+', TokenType.PLUS         },
-            { '*', TokenType.ASTERISK   }, { '.', TokenType.DOT          },
             { '^', TokenType.HAT        }, { '#', TokenType.HASH         },
             { '&', TokenType.AMPERSAN   }, { ',', TokenType.COMMA        },
+            { '*', TokenType.ASTERISK   }, 
         };
 
         private Dictionary<string, TokenType> _keywords = new Dictionary<string, TokenType>()
@@ -217,6 +217,16 @@ namespace Sail.Lexical
                         Read();
 
                         CreateToken(TokenType.STRLITERAL, strlit);
+                        break;
+
+                    case '.':
+                        Read();
+
+                        if ((char)_reader.Peek() == '.')
+                            CreateToken(TokenType.TO, "..");
+                        else CreateToken(TokenType.DOT, ".");
+
+                        Read();
                         break;
                 }
             }

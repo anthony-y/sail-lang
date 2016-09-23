@@ -113,7 +113,7 @@ set_sail :: () -> str {
     print("----------");
 
     goal := 10;
-    for 1 to goal {
+    for 1 .. goal {
         // "it" is an implicit variable which represents the current object of the iteration
         puts(it);
 
