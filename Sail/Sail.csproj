@@ -60,8 +60,8 @@
     <Compile Include="Parse\Expressions\FloatLiteralExpression.cs" />
     <Compile Include="Parse\Expressions\ForExpression.cs" />
     <Compile Include="Parse\Expressions\IteratorExpression.cs" />
+    <Compile Include="Parse\Expressions\MathsExpression.cs" />
     <Compile Include="Parse\Parsers\ComparisonParser.cs" />
-    <Compile Include="Parse\Parsers\DivisionParser.cs" />
     <Compile Include="Parse\Parsers\ElseIfParser.cs" />
     <Compile Include="Parse\Parsers\FetchParser.cs" />
     <Compile Include="Parse\Parsers\ForParser.cs" />
@@ -78,7 +78,7 @@
     <Compile Include="Parse\Expressions\TypeOfExpression.cs" />
     <Compile Include="Parse\Parsers\ElseParser.cs" />
     <Compile Include="Parse\Parsers\IteratorParser.cs" />
-    <Compile Include="Parse\Parsers\MultiplicationParser.cs" />
+    <Compile Include="Parse\Parsers\MathsParser.cs" />
     <Compile Include="Parse\Parsers\PutsParser.cs" />
     <Compile Include="Parse\Expressions\StringLiteralExpression.cs" />
     <Compile Include="Parse\Expressions\TypeNameExpression.cs" />
@@ -87,7 +87,6 @@
     <Compile Include="Parse\IInfixParser.cs" />
     <Compile Include="Parse\Parser.cs" />
     <Compile Include="Parse\IPrefixParser.cs" />
-    <Compile Include="Parse\Parsers\AdditionParser.cs" />
     <Compile Include="Parse\Parsers\AsCastParser.cs" />
     <Compile Include="Parse\Parsers\AssignmentExplicitParser.cs" />
     <Compile Include="Parse\Parsers\BlockDeclarationParser.cs" />
@@ -100,7 +99,6 @@
     <Compile Include="Parse\Parsers\FunctionDeclarationParser.cs" />
     <Compile Include="Parse\Parsers\PrintParser.cs" />
     <Compile Include="Parse\Parsers\ReturnParser.cs" />
-    <Compile Include="Parse\Parsers\SubtractionParser.cs" />
     <Compile Include="Parse\Parsers\TypeNameParser.cs" />
     <Compile Include="Parse\Parsers\TypeOfParser.cs" />
     <Compile Include="Parse\Precedence.cs" />

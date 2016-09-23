@@ -64,10 +64,10 @@ namespace Sail.Parse
 
             RegisterPrefix(TokenType.RETURN, new ReturnParser());
 
-            RegisterInfix(TokenType.PLUS, new AdditionParser());
-            RegisterInfix(TokenType.MINUS, new SubtractionParser());
-            RegisterInfix(TokenType.ASTERISK, new MultiplicationParser());
-            RegisterInfix(TokenType.FSLASH, new DivisionParser());
+            RegisterInfix(TokenType.PLUS, new MathsParser());
+            RegisterInfix(TokenType.MINUS, new MathsParser());
+            RegisterInfix(TokenType.ASTERISK, new MathsParser());
+            RegisterInfix(TokenType.FSLASH, new MathsParser());
 
             RegisterPrefix(TokenType.IF, new IfParser());
             RegisterPrefix(TokenType.ELSE, new ElseParser());

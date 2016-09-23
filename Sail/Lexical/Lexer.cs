@@ -24,7 +24,7 @@ namespace Sail.Lexical
             { '}', TokenType.CBRACE     }, { '+', TokenType.PLUS         },
             { '^', TokenType.HAT        }, { '#', TokenType.HASH         },
             { '&', TokenType.AMPERSAN   }, { ',', TokenType.COMMA        },
-            { '*', TokenType.ASTERISK   }, 
+            { '*', TokenType.ASTERISK   }, { '%', TokenType.MODULO       }
         };
 
         private Dictionary<string, TokenType> _keywords = new Dictionary<string, TokenType>()
