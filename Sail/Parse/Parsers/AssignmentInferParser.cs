@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Sail.Lexical;
 
+using Sail.Lexical;
+using Sail.Error;
 using Sail.Parse.Expressions;
 
 namespace Sail.Parse.Parsers
@@ -20,7 +17,10 @@ namespace Sail.Parse.Parsers
         public IExpression Parse(Parser parser, Token token, IExpression left)
         {
             if (!(left is IdentifierExpression))
-                throw new Exception("Left of assignment must be identifier!");
+            {
+                ErrorManager.CreateError("Explicit variable declaration syntax: name : type = value", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
             var value = parser.ParseExpression(GetPrecedence() - 1);
 
@@ -37,7 +37,7 @@ namespace Sail.Parse.Parsers
 
             else throw new Exception("Incorrect explicit variable declaration syntax!");
 
-            return new AssignmentExpression(left, value, type);
+            return new AssignmentExpression(token.Line, token.Column, left, value, type);
         }
     }
 }

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Sail.Lexical;
+﻿using Sail.Lexical;
 using Sail.Parse.Expressions;
+using Sail.Error;
 
 namespace Sail.Parse.Parsers
 {
@@ -22,16 +17,17 @@ namespace Sail.Parse.Parsers
             switch (token.Type)
             {
                 case TokenType.STRLITERAL:
-                    return new StringLiteralExpression(token.Value);
+                    return new StringLiteralExpression(token.Line, token.Column, token.Value);
                 case TokenType.INTLITERAL:
-                    return new IntLiteralExpression(token.Value);
+                    return new IntLiteralExpression(token.Line, token.Column, token.Value);
                 case TokenType.FLOATLITERAL:
-                    return new FloatLiteralExpression(token.Value);
+                    return new FloatLiteralExpression(token.Line, token.Column, token.Value);
                 case TokenType.BOOLLITERAL:
-                    return new BoolLiteralExpression(token.Value);
+                    return new BoolLiteralExpression(token.Line, token.Column, token.Value);
             }
 
-            throw new Exception("Unexpected literal value!");
+            ErrorManager.CreateError("Right of iterator expression must be an integer or variable name!", ErrorType.Error, token.Line, token.Column);
+            return null;
         }
 
         public IExpression Parse(Parser parser, Token token, IExpression left)

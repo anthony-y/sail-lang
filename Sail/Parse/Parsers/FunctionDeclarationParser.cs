@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Sail.Lexical;
 
+using Sail.Lexical;
+using Sail.Error;
 using Sail.Parse.Expressions;
 
 namespace Sail.Parse.Parsers
@@ -26,12 +25,18 @@ namespace Sail.Parse.Parsers
         public IExpression Parse(Parser parser, Token token, IExpression left)
         {
             if (!(left is IdentifierExpression))
-                throw new Exception("Expected identifier as name for function declaration!");
+            {
+                ErrorManager.CreateError("Expected identifier as name for function declaration!", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
             string name = (left as IdentifierExpression).Value;
 
             if (parser.TokenStream.Peek().Type != TokenType.OPAREN)
-                throw new Exception("Function parameters must be enclosed in parenthesis!");
+            {
+                ErrorManager.CreateError("Function parameters must be enclosed in parenthesis!", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
             // Read past open parenthesis
             parser.TokenStream.Read();
@@ -45,7 +50,10 @@ namespace Sail.Parse.Parsers
                     var variable = parser.ParseExpression(GetPrecedence() - 1);
 
                     if (!(variable is VarDeclarationNoAssignExpression))
-                        throw new Exception("Invalid parameters in function!");
+                    {
+                        ErrorManager.CreateError("Parameters must look like: (name: type, ...)!", ErrorType.Error, token.Line, token.Column);
+                        return null;
+                    }
 
                     parameters.Add((VarDeclarationNoAssignExpression)variable);
 
@@ -69,7 +77,10 @@ namespace Sail.Parse.Parsers
                     var type = parser.ParseExpression(GetPrecedence());
 
                     if (!(type is TypeNameExpression))
-                        throw new Exception("Invalid return types in function declaration!");
+                    {
+                        ErrorManager.CreateError("Function return type(s) must be a typename!", ErrorType.Error, token.Line, token.Column);
+                        return null;
+                    }
 
                     returnTypeExpressions.Add((TypeNameExpression)type);
                 } while (parser.TokenStream.MatchAll(TokenType.COMMA));
@@ -80,15 +91,24 @@ namespace Sail.Parse.Parsers
             {
                 returnType = (parser.ParseExpression(0) as TypeNameExpression);
                 if (returnType == null)
-                    throw new Exception("You must have a return type for your function!");
+                {
+                    ErrorManager.CreateError("Your function must have a return type: -> [(]type [, type, ...)]!", ErrorType.Error, token.Line, token.Column);
+                    return null;
+                }
 
                 if (!(returnType is TypeNameExpression))
-                    throw new Exception("Return type of function must be a type name expression!");
+                {
+                    ErrorManager.CreateError("Function return type(s) must be a typename!", ErrorType.Error, token.Line, token.Column);
+                    return null;
+                }
             }
 
             var block = parser.ParseExpression(GetPrecedence());
             if (block == null || !(block is BlockExpression))
-                throw new Exception("Function body missing!");
+            {
+                ErrorManager.CreateError("Function declaration must have a body ({ ... })!", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
             var returnTypes = new List<SailReturnType>();
 
@@ -98,7 +118,7 @@ namespace Sail.Parse.Parsers
 
             else returnTypes.Add(TypeResolver.ToReturnType(returnType));
 
-            return new FunctionExpression(name, parameters, returnTypes, block as BlockExpression);
+            return new FunctionExpression(token.Line, token.Column, name, parameters, returnTypes, block as BlockExpression);
         }
     }
 }

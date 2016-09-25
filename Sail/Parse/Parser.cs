@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Sail.Lexical;
 using Sail.Parse.Parsers;
+using Sail.Error;
 
 namespace Sail.Parse
 {
@@ -92,7 +93,7 @@ namespace Sail.Parse
         public Token Expect(TokenType type)
         {
             if (TokenStream.Peek().Type != type)
-                throw new Exception($"[Line {TokenStream.Current.Line} Column {TokenStream.Current.Column}] Expected {type.ToString().ToLower()}!");
+                ErrorManager.CreateError($"[Line {TokenStream.Current.Line} Column {TokenStream.Current.Column}] Expected {type.ToString().ToLower()}!");
 
             return TokenStream.Read();
         }
@@ -135,7 +136,10 @@ namespace Sail.Parse
 
             var prefix = GetPrefix(token.Type);
             if (prefix == null)
-                 throw new Exception($"[Sail] Syntax error on line {TokenStream.Current.Line}, column {TokenStream.Current.Column}!");
+            {
+                //ErrorManager.CreateError("Syntax error!", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
             var left = prefix.Parse(this, token);
 
@@ -159,7 +163,15 @@ namespace Sail.Parse
             TokenStream.StartStream();
 
             while (TokenStream.Peek(0) != null)
+            {
+                if (ErrorManager.ShouldPrintErrors())
+                {
+                    ErrorManager.PrintErrors();
+                    Environment.Exit(1);
+                }
+
                 exprs.Add(ParseExpression(0));
+            }
 
             return exprs;
         }

@@ -13,7 +13,7 @@ namespace Sail.Parse.Parsers
     {
         public IExpression Parse(Parser parser, Token token)
         {
-            return new IdentifierExpression(token.Value);
+            return new IdentifierExpression(token.Line, token.Column, token.Value);
         }
     }
 }

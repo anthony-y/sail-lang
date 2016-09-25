@@ -11,6 +11,9 @@ namespace Sail.Parse.Expressions
     internal class AsCastExpression
         : IExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public AsCastExpression(IExpression left, SailType type)
         {
 

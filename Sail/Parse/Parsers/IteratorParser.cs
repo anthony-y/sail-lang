@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Sail.Lexical;
+using Sail.Error;
 using Sail.Parse.Expressions;
 
 namespace Sail.Parse.Parsers
@@ -16,10 +17,8 @@ namespace Sail.Parse.Parsers
         public IExpression Parse(Parser parser, Token token, IExpression left)
         {
             var right = parser.ParseExpression(1);
-            if (!(right is IntLiteralExpression || right is IdentifierExpression))
-                throw new Exception("Right of iterator expression needs to be an integer or a variable name");
-
-            int? lowerBound = null; // "NaN"
+            
+            int? lowerBound = null;
             int? upperBound = null;
 
             string lowerBoundVar = null;
@@ -31,7 +30,11 @@ namespace Sail.Parse.Parsers
             else if (left is IdentifierExpression)
                 lowerBoundVar = ((IdentifierExpression)left).Value;
 
-            else throw new Exception("Left of iterator expression needs to be an integer or a variable name");
+            else
+            {
+                ErrorManager.CreateError("Left of iterator expression must be an integer or variable name!", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
             if (right is IntLiteralExpression)
                 upperBound = ((IntLiteralExpression)right).Value;
@@ -39,9 +42,13 @@ namespace Sail.Parse.Parsers
             else if (right is IdentifierExpression)
                 upperBoundVar = ((IdentifierExpression)right).Value;
 
-            else throw new Exception("Right of iterator expression needs to be a number or a variable name");
+            else
+            {
+                ErrorManager.CreateError("Right of iterator expression must be an integer or variable name!", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
-            return new IteratorExpression(lowerBound, upperBound, lowerBoundVar, upperBoundVar);
+            return new IteratorExpression(token.Line, token.Column, lowerBound, upperBound, lowerBoundVar, upperBoundVar);
         }
     }
 }

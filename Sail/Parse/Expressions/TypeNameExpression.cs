@@ -11,11 +11,17 @@ namespace Sail.Parse.Expressions
     internal class TypeNameExpression
         : IExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public string TypeName { get; private set; }
 
-        public TypeNameExpression(string typeName)
+        public TypeNameExpression(int line, int column, string typeName)
         {
             TypeName = typeName;
+
+            Line = line;
+            Column = column;
         }
 
         public string Print()

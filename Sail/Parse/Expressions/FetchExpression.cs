@@ -10,11 +10,17 @@ namespace Sail.Parse.Expressions
     internal class FetchExpression
         : IExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public string FileName { get; private set; }
 
-        public FetchExpression(string fileName)
+        public FetchExpression(int line, int column, string fileName)
         {
             FileName = fileName;
+
+            Line = line;
+            Column = column;
         }
 
         public void Accept(IVisitor visitor)

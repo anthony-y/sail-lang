@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Sail.Parse.Expressions;
 using Sail.Lexical;
+using Sail.Error;
 
 namespace Sail.Parse.Parsers
 {
@@ -25,13 +22,20 @@ namespace Sail.Parse.Parsers
             else if (iterator is IdentifierExpression)
                 listName = ((IdentifierExpression)iterator).Value;
 
-            else throw new Exception("You can only iterate over a list or iterator expression");
+            else
+            {
+                ErrorManager.CreateError("You can only iterate over a list, str literal or iterator expression!", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
             var block = parser.ParseExpression(1);
             if (!(block is BlockExpression))
-                throw new Exception("For expression needs a block");
+            {
+                ErrorManager.CreateError("For expression needs a block!", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
-            return new ForExpression(iteratorExpr, listName, (BlockExpression)block);
+            return new ForExpression(token.Line, token.Column, iteratorExpr, listName, (BlockExpression)block);
         }
     }
 }

@@ -12,17 +12,23 @@ namespace Sail.Parse.Expressions
     internal class ComparisonExpression
         : IExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public IExpression Left { get; private set; }
         public IExpression Right { get; private set; }
 
         public TokenType TokenType { get; private set; }
 
-        public ComparisonExpression(IExpression left, IExpression right, TokenType tokenType)
+        public ComparisonExpression(int line, int column, IExpression left, IExpression right, TokenType tokenType)
         {
             TokenType = tokenType;
 
             Left = left;
             Right = right;
+
+            Line = line;
+            Column = column;
         }
 
         public void Accept(IVisitor visitor)

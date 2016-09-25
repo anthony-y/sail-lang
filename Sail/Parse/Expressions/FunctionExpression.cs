@@ -10,12 +10,16 @@ namespace Sail.Parse.Expressions
     internal class FunctionExpression
         : IExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public string Name { get; set; }
+
         public List<VarDeclarationNoAssignExpression> Params { get; set; }
         public List<SailReturnType> ReturnTypes { get; set; }
         public BlockExpression Block { get; set; }
 
-        public FunctionExpression(string name, List<VarDeclarationNoAssignExpression> parames, List<SailReturnType> returnType, BlockExpression block)
+        public FunctionExpression(int line, int column, string name, List<VarDeclarationNoAssignExpression> parames, List<SailReturnType> returnType, BlockExpression block)
         {
             Name = name;
             Params = parames;
@@ -23,6 +27,9 @@ namespace Sail.Parse.Expressions
             ReturnTypes = returnType;
 
             Block.Owner = this;
+
+            Line = line;
+            Column = column;
         }
 
         public string Print()

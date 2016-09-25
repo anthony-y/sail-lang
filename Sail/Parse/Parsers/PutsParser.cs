@@ -22,7 +22,7 @@ namespace Sail.Parse.Parsers
             if (parser.TokenStream.Peek().Type == TokenType.CPAREN)
                 parser.TokenStream.Read();
 
-            return new PutsExpression(exprToPrint);
+            return new PutsExpression(token.Line, token.Column, exprToPrint);
         }
     }
 }

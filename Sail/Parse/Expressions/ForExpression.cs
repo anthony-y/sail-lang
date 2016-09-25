@@ -10,16 +10,23 @@ namespace Sail.Parse.Expressions
     internal class ForExpression
         : IExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public IteratorExpression Iterator { get; private set; }
         public BlockExpression Block { get; private set; }
+
         public string ListName { get; private set; }
 
-        public ForExpression(IteratorExpression iterator, string listName, BlockExpression block)
+        public ForExpression(int line, int column, IteratorExpression iterator, string listName, BlockExpression block)
         {
             Iterator = iterator;
             ListName = listName;
 
             Block = block;
+
+            Line = line;
+            Column = column;
         }
 
         public void Accept(IVisitor visitor)

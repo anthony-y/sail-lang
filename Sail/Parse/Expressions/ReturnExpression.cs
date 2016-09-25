@@ -10,11 +10,17 @@ namespace Sail.Parse.Expressions
     internal class ReturnExpression
         : IExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public IExpression Value { get; private set; }
 
-        public ReturnExpression(IExpression value)
+        public ReturnExpression(int line, int column, IExpression value)
         {
             Value = value;
+
+            Line = line;
+            Column = column;
         }
 
         public void Accept(IVisitor visitor)

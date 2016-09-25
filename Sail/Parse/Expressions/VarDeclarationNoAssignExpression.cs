@@ -11,13 +11,19 @@ namespace Sail.Parse.Expressions
     internal class VarDeclarationNoAssignExpression
         : IExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public string Name { get; set; }
         public SailType Type { get; set; }
 
-        public VarDeclarationNoAssignExpression(string name, SailType type)
+        public VarDeclarationNoAssignExpression(int line, int column, string name, SailType type)
         {
             Name = name;
             Type = type;
+
+            Line = line;
+            Column = column;
         }
 
         public string Print()

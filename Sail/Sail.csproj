@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Error\ErrorManager.cs" />
+    <Compile Include="Error\ErrorType.cs" />
+    <Compile Include="Error\SailError.cs" />
     <Compile Include="Interpreter\SailFunction.cs" />
     <Compile Include="Interpreter\SailInterpreter.cs" />
     <Compile Include="Interpreter\IVisitor.cs" />

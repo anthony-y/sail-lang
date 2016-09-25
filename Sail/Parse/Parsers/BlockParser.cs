@@ -32,7 +32,7 @@ namespace Sail.Parse.Parsers
 
             parser.Expect(TokenType.CBRACE);
 
-            return new BlockExpression(exprs);
+            return new BlockExpression(token.Line, token.Column, exprs);
         }
 
         public IExpression Parse(Parser parser, Token token, IExpression left)

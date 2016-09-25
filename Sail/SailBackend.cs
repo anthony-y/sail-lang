@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Sail.Interpreter;
 using Sail.Lexical;
 using Sail.Parse;
+using Sail.Error;
 
 namespace Sail
 {
@@ -20,7 +21,15 @@ namespace Sail
             var stopwatch = Stopwatch.StartNew();
 
             foreach (var node in ast)
+            {
+                if (ErrorManager.ShouldPrintErrors())
+                {
+                    ErrorManager.PrintErrors();
+                    Environment.Exit(1);
+                }
+
                 interpreter.Visit(node);
+            }
 
             stopwatch.Stop();
 

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Sail.Parse.Expressions;
+﻿using Sail.Parse.Expressions;
 using Sail.Lexical;
+using Sail.Error;
 
 namespace Sail.Parse.Parsers
 {
@@ -16,14 +11,17 @@ namespace Sail.Parse.Parsers
         {
             var fileNameExpr = parser.ParseExpression(1);
             if (!(fileNameExpr is StringLiteralExpression))
-                throw new Exception("Right hand side of fetch expression must be str literal of file name!");
+            {
+                ErrorManager.CreateError("Right hand side of fetch expression must be a str literal containing the desired file name!", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
             string fileName = ((StringLiteralExpression)fileNameExpr).Value;
 
             if (parser.TokenStream.Peek().Type == TokenType.SEMICOLON)
                 parser.TokenStream.Read();
 
-            return new FetchExpression(fileName);
+            return new FetchExpression(token.Line, token.Column, fileName);
         }
     }
 }

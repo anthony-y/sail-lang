@@ -19,7 +19,7 @@ namespace Sail.Parse.Parsers
             //if (!(value is ILiteralExpression) || !(value is IdentifierExpression))
             //    throw new Exception("Return must be followed by variable name or literal!");
 
-            return new ReturnExpression(value);
+            return new ReturnExpression(token.Line, token.Column, value);
         }
     }
 }

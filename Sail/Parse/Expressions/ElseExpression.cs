@@ -10,11 +10,17 @@ namespace Sail.Parse.Expressions
     internal class ElseExpression
         : IExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public BlockExpression Block { get; set; }
 
-        public ElseExpression(BlockExpression block)
+        public ElseExpression(int line, int column, BlockExpression block)
         {
             Block = block;
+
+            Line = line;
+            Column = column;
         }
 
         public void Accept(IVisitor visitor)

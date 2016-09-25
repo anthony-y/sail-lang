@@ -11,11 +11,17 @@ namespace Sail.Parse.Expressions
     internal class IdentifierExpression
         : IExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public string Value { get; set; }
 
-        public IdentifierExpression(string name)
+        public IdentifierExpression(int line, int column, string name)
         {
             Value = name;
+
+            Line = line;
+            Column = column;
         }
 
         public string Print()

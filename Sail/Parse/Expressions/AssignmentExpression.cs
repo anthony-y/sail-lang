@@ -11,17 +11,24 @@ namespace Sail.Parse.Expressions
     internal class AssignmentExpression
         : IExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public IExpression Name { get; set; }
         public IExpression Value { get; set; }
+
         public SailType Type { get; set; }
         public SailType ExpectedType { get; set; }
 
-        public AssignmentExpression(IExpression name, IExpression value, SailType type, SailType expectedType = SailType.UNKNOWN)
+        public AssignmentExpression(int line, int column, IExpression name, IExpression value, SailType type, SailType expectedType = SailType.UNKNOWN)
         {
             Name = name;
             Value = value;
             Type = type;
             ExpectedType = expectedType;
+
+            Line = line;
+            Column = column;
         }
 
         public void Accept(IVisitor visitor)

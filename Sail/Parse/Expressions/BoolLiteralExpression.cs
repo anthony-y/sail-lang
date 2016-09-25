@@ -11,11 +11,17 @@ namespace Sail.Parse.Expressions
     internal class BoolLiteralExpression
         : IExpression, ILiteralExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public bool Value { get; set; }
 
-        public BoolLiteralExpression(string strValue)
+        public BoolLiteralExpression(int line, int column, string strValue)
         {
             Value = strValue == "true" ? true : false;
+
+            Line = line;
+            Column = column;
         }
 
         public string Print()

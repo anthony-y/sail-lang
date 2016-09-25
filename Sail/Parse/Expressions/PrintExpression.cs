@@ -10,11 +10,17 @@ namespace Sail.Parse.Expressions
     internal class PrintExpression
         : IExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public IExpression Value { get; set; }
 
-        public PrintExpression(IExpression value)
+        public PrintExpression(int line, int column, IExpression value)
         {
             Value = value;
+
+            Line = line;
+            Column = column;
         }
 
         public string Print()

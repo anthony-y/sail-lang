@@ -11,11 +11,17 @@ namespace Sail.Parse.Expressions
     internal class StringLiteralExpression
         : IExpression, ILiteralExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public string Value { get; set; }
 
-        public StringLiteralExpression(string value)
+        public StringLiteralExpression(int line, int column, string value)
         {
             Value = value;
+
+            Line = line;
+            Column = column;
         }
 
         public string Print()

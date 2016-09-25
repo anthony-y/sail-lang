@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Sail.Lexical;
+﻿using Sail.Lexical;
 using Sail.Parse.Expressions;
+using Sail.Error;
 
 namespace Sail.Parse.Parsers
 {
@@ -17,9 +12,12 @@ namespace Sail.Parse.Parsers
             var elseIfCondition = parser.ParseExpression(1);
             var block = parser.ParseExpression(1) as BlockExpression;
             if (block == null)
-                throw new Exception("Else if expression is missing a block");
+            {
+                ErrorManager.CreateError("Else if expression is missing a block!", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
-            return new ElseIfExpression(block, elseIfCondition);
+            return new ElseIfExpression(token.Line, token.Column, block, elseIfCondition);
         }
     }
 }

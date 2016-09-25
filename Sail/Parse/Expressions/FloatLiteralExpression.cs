@@ -11,14 +11,20 @@ namespace Sail.Parse.Expressions
     internal class FloatLiteralExpression
         : IExpression, ILiteralExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public float Value { get; set; }
 
-        public FloatLiteralExpression(string strValue)
+        public FloatLiteralExpression(int line, int column, string strValue)
         {
             float value;
             float.TryParse(strValue, out value);
 
             Value = value;
+
+            Line = line;
+            Column = column;
         }
 
         public string Print()

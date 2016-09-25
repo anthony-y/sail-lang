@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Sail.Lexical;
+﻿using Sail.Lexical;
 using Sail.Parse.Expressions;
+using Sail.Error;
 
 namespace Sail.Parse.Parsers
 {
@@ -30,10 +26,13 @@ namespace Sail.Parse.Parsers
                     typeName = token.Value;
                     break;
                 default:
-                    throw new Exception("Invalid type name!");
+                    {
+                        ErrorManager.CreateError("Invalid type name!", ErrorType.Error, token.Line, token.Column);
+                        return null;
+                    }
             }
 
-            return new TypeNameExpression(typeName);
+            return new TypeNameExpression(token.Line, token.Column, typeName);
         }
 
         public IExpression Parse(Parser parser, Token token, IExpression left)

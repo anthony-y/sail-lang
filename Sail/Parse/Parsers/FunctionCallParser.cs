@@ -35,7 +35,7 @@ namespace Sail.Parse.Parsers
             }
             else parser.TokenStream.Read();
 
-            return new FunctionCallExpression(functionName, parameters);
+            return new FunctionCallExpression(token.Line, token.Column, functionName, parameters);
         }
     }
 }

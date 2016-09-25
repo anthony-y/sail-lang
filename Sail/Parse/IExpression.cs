@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Sail.Interpreter;
+﻿using Sail.Interpreter;
 
 namespace Sail.Parse
 {
     internal interface IExpression
     {
+        int Line { get; set; }
+        int Column { get; set; }
+
         void Accept(IVisitor visitor);
+
         string Print();
     }
 }

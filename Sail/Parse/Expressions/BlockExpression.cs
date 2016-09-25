@@ -11,12 +11,18 @@ namespace Sail.Parse.Expressions
     internal class BlockExpression
         : IExpression
     {
+        public int Line { get; set; }
+        public int Column { get; set; }
+
         public List<IExpression> Expressions { get; private set; }
         public FunctionExpression Owner { get; set; }
 
-        public BlockExpression(List<IExpression> expressions)
+        public BlockExpression(int line, int column, List<IExpression> expressions)
         {
             Expressions = expressions;
+
+            Line = line;
+            Column = column;
         }
 
         public string Print()

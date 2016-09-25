@@ -5,6 +5,7 @@ using System.Linq;
 using Sail.Lexical;
 using Sail.Parse;
 using Sail.Parse.Expressions;
+using Sail.Error;
 
 namespace Sail.Interpreter
 {
@@ -45,7 +46,10 @@ namespace Sail.Interpreter
             if (block.Owner != null)
             {
                 if (_functionVariables.Count != block.Owner.Params.Count)
-                    throw new Exception("Wrong amount of arguments passed to function!");
+                {
+                    ErrorManager.CreateError("Wrong amount of arguments passed to function!", ErrorType.Error, block.Line, block.Column);
+                    return;
+                }
 
                 for (int i = block.Owner.Params.Count - 1; i >= 0; i--)
                 {
@@ -53,7 +57,10 @@ namespace Sail.Interpreter
                     var current = block.Owner.Params[i];
 
                     if (current.Type != param.Type)
-                        throw new Exception("Type mismatch in function! Expected " + block.Owner.Params[i].Type + " but got " + param.Type);
+                    {
+                        ErrorManager.CreateError("Type mismatch in function! Expected " + block.Owner.Params[i].Type + " but got " + param.Type, ErrorType.Error, block.Line, block.Column);
+                        return;
+                    }
 
                     _variables.Add(new SailObject(current.Name, param.Value, param.Type));
                 }
@@ -87,7 +94,10 @@ namespace Sail.Interpreter
                     var variable = _variables.FirstOrDefault(va => va.Name == (v as IdentifierExpression).Value);
 
                     if (variable == null)
-                        throw new Exception("Argument passed to function doesn't exist!");
+                    {
+                        ErrorManager.CreateError("Argument passed to function doesn't exist!", ErrorType.Error, funcCall.Line, funcCall.Column);
+                        return;
+                    }
 
                     value = variable.Value;
                     type = variable.Type;
@@ -109,7 +119,11 @@ namespace Sail.Interpreter
                     value = (bool)_comparisonResults.Pop().Value;
                 }
 
-                else throw new Exception("Argument passed to function must be variable name or value!");
+                else
+                {
+                    ErrorManager.CreateError("Argument passed to function must be a variable name or value!", ErrorType.Error, funcCall.Line, funcCall.Column);
+                    return;
+                }
 
                 _functionVariables.Push(new SailObject(null, value, type));
             }
@@ -215,13 +229,19 @@ namespace Sail.Interpreter
                     var function = _functions.FirstOrDefault(f => f.Name == functionName);
 
                     if (function == null)
-                        throw new Exception("Tried to assign to function that doesn't exist!");
+                    {
+                        ErrorManager.CreateError("Tried to assign to function that doesn't exist!", ErrorType.Error, assignment.Line, assignment.Column);
+                        return;
+                    }
 
                     // Call the function
                     Visit(assignment.Value);
 
                     if (!_returnValues.Any())
-                        throw new Exception("Attempted to assign to function that doesn't return anything!");
+                    {
+                        ErrorManager.CreateError("Attempted to assign to function that doesn't return anything!", ErrorType.Error, assignment.Line, assignment.Column);
+                        return;
+                    }
 
                     var returnVal = _returnValues.Pop();
                     varValue = returnVal.Value;
@@ -233,7 +253,10 @@ namespace Sail.Interpreter
                         assignment.ExpectedType = funcReturnType;
 
                     if (funcReturnType != assignment.ExpectedType)
-                        throw new Exception("Type mismatch in function return assignment! Expected " + assignment.ExpectedType + " but got " + funcReturnType);
+                    {
+                        ErrorManager.CreateError("Type mismatch in function return assignment! Expected " + assignment.ExpectedType + " but got " + funcReturnType, ErrorType.Error, assignment.Line, assignment.Column);
+                        return;
+                    }
 
                     assignment.Type = TypeResolver.ToSailType(function.ReturnTypes[0].ToString());
 
@@ -250,7 +273,10 @@ namespace Sail.Interpreter
             } else
             {
                 if (variable.Type != TypeResolver.ToSailType(literal))
-                    throw new Exception("Attempted to reassign to variable of different type than given value!");
+                {
+                    ErrorManager.CreateError("Attempted to reassign to variable of different type than given value!", ErrorType.Error, assignment.Line, assignment.Column);
+                    return;
+                }
 
                 variable.Value = literal?.GetValue();
             }
@@ -271,7 +297,10 @@ namespace Sail.Interpreter
                 var variable = _variables.FirstOrDefault(va => va.Name == varName);
 
                 if (variable == null)
-                    throw new Exception("Can't return non-existant variable!");
+                {
+                    ErrorManager.CreateError("Can't return non-existant variable!", ErrorType.Error, returnExpr.Line, returnExpr.Column);
+                    return;
+                }
 
                 _returnValues.Push(new SailObject(null, variable.Value, variable.Type));
             }
@@ -299,10 +328,16 @@ namespace Sail.Interpreter
                 var variable = _variables.FirstOrDefault(v => v.Name == name);
 
                 if (variable == null)
-                    throw new Exception("Variable not found in if condition!");
+                {
+                    ErrorManager.CreateError("Variable not found in if condition!", ErrorType.Error, ifExpr.Line, ifExpr.Column);
+                    return;
+                }
 
                 if (variable.Value == null)
-                    throw new Exception("Cannot compare null object");
+                {
+                    ErrorManager.CreateError("Cannot compare null object!", ErrorType.Error, ifExpr.Line, ifExpr.Column);
+                    return;
+                }
 
                 boolVal = Convert.ToBoolean(variable.Value);
             }
@@ -326,10 +361,16 @@ namespace Sail.Interpreter
                     var variable = _variables.FirstOrDefault(v => v.Name == name);
 
                     if (variable == null)
-                        throw new Exception("Variable not found in if condition!");
+                    {
+                        ErrorManager.CreateError("Variable not found in else if condition!", ErrorType.Error, elseIf.Line, elseIf.Column);
+                        return;
+                    }
 
                     if (variable.Value == null)
-                        throw new Exception("Cannot compare null object");
+                    {
+                        ErrorManager.CreateError("Cannot compare null object!", ErrorType.Error, elseIf.Line, elseIf.Column);
+                        return;
+                    }
 
                     elseIfValAsBool = Convert.ToBoolean(variable.Value);
                 }
@@ -368,12 +409,18 @@ namespace Sail.Interpreter
                 {
                     var lowerVariable = _variables.FirstOrDefault(v => v.Name == forExpr.Iterator.VariableLower);
                     if (lowerVariable == null)
-                        throw new Exception("Cannot iterate over non-existant list");
+                    {
+                        ErrorManager.CreateError("Cannot iterate over non-existant list!", ErrorType.Error, forExpr.Iterator.Line, forExpr.Iterator.Column);
+                        return;
+                    }
 
                     // TODO (anthony) : add checking to make sure the variable is actually a list, when lists are actually implemented.
 
                     if (!(lowerVariable.Value is int))
-                        throw new Exception("Lower bound variable is not a number");
+                    {
+                        ErrorManager.CreateError("Lower bound of for expression is not a number!", ErrorType.Error, forExpr.Iterator.Line, forExpr.Iterator.Column);
+                        return;
+                    }
 
                     lowerBound = (int)lowerVariable.Value;
                 }
@@ -382,12 +429,18 @@ namespace Sail.Interpreter
                 {
                     var upperVariable = _variables.FirstOrDefault(v => v.Name == forExpr.Iterator.VariableUpper);
                     if (upperVariable == null)
-                        throw new Exception("Cannot iterate over non-existant list");
+                    {
+                        ErrorManager.CreateError("Cannot iterate over non-existant list!", ErrorType.Error, forExpr.Iterator.Line, forExpr.Iterator.Column);
+                        return;
+                    }
 
                     // TODO (anthony) : add checking to make sure the variable is actually a list, when lists are actually implemented.
 
                     if (!(upperVariable.Value is int))
-                        throw new Exception("Upper bound variable is not a number");
+                    {
+                        ErrorManager.CreateError("Upper bound of for expression is not a number!", ErrorType.Error, forExpr.Iterator.Line, forExpr.Iterator.Column);
+                        return;
+                    }
 
                     upperBound = (int)upperVariable.Value;
                 }
@@ -404,7 +457,10 @@ namespace Sail.Interpreter
                 var variable = _variables.FirstOrDefault(v => v.Name == forExpr.ListName);
 
                 if (variable.Value == null)
-                    throw new Exception("Can't iterate over null value!");
+                {
+                    ErrorManager.CreateError("Cannot iterate over non-null value!", ErrorType.Error, forExpr.Iterator.Line, forExpr.Iterator.Column);
+                    return;
+                }
 
                 if (variable.Type == SailType.STR)
                     iteratee = (string)variable.Value;
@@ -470,10 +526,16 @@ namespace Sail.Interpreter
                 var variable = _variables.FirstOrDefault(v => v.Name == name);
 
                 if (variable == null)
-                    throw new Exception("Can't compare non-existant variable!");
+                {
+                    ErrorManager.CreateError("Can't compare non-existant variable!", ErrorType.Error, comparison.Line, comparison.Column);
+                    return;
+                }
 
                 if (variable.Value == null)
-                    throw new Exception("Can't compare null valued variable!");
+                {
+                    ErrorManager.CreateError("Can't compare null valued variable!", ErrorType.Error, comparison.Line, comparison.Column);
+                    return;
+                }
 
                 leftVal = variable.Value;
             }
@@ -494,10 +556,16 @@ namespace Sail.Interpreter
                 var variable = _variables.FirstOrDefault(v => v.Name == name);
 
                 if (variable == null)
-                    throw new Exception("Can't compare non-existant variable!");
+                {
+                    ErrorManager.CreateError("Can't compare non-existant variable!", ErrorType.Error, comparison.Line, comparison.Column);
+                    return;
+                }
 
                 if (variable.Value == null)
-                    throw new Exception("Can't compare null valued variable!");
+                {
+                    ErrorManager.CreateError("Can't compare null valued variable!", ErrorType.Error, comparison.Line, comparison.Column);
+                    return;
+                }
 
                 rightVal = variable.Value;
             }
@@ -510,7 +578,10 @@ namespace Sail.Interpreter
             || comparison.TokenType == TokenType.GTHANEQUAL
             || comparison.TokenType == TokenType.LTHANEQUAL) && leftVal is string
             || rightVal is string)
-                throw new Exception("You can only use maths comparisons on number or variables!");
+            {
+                ErrorManager.CreateError("You can only use maths comparisons on number or variables!", ErrorType.Error, comparison.Line, comparison.Column);
+                return;
+            }
 
             bool value = false;
 
@@ -570,10 +641,16 @@ namespace Sail.Interpreter
                 var variable = _variables.FirstOrDefault(v => v.Name == name);
 
                 if (variable == null)
-                    throw new Exception("Can't compare non-existant variable!");
+                {
+                    ErrorManager.CreateError("Can't compare non-existant variable!", ErrorType.Error, maths.Left.Line, maths.Left.Column);
+                    return;
+                }
 
                 if (variable.Value == null)
-                    throw new Exception("Can't compare null valued variable!");
+                {
+                    ErrorManager.CreateError("Can't compare null valued variable!", ErrorType.Error, maths.Left.Line, maths.Left.Column);
+                    return;
+                }
 
                 leftVal = variable.Value;
 
@@ -609,10 +686,16 @@ namespace Sail.Interpreter
                 var variable = _variables.FirstOrDefault(v => v.Name == name);
 
                 if (variable == null)
-                    throw new Exception("Can't compare non-existant variable!");
+                {
+                    ErrorManager.CreateError("Can't compare non-existant variable!", ErrorType.Error, maths.Right.Line, maths.Right.Column);
+                    return;
+                }
 
                 if (variable.Value == null)
-                    throw new Exception("Can't compare null valued variable!");
+                {
+                    ErrorManager.CreateError("Can't compare null valued variable!", ErrorType.Error, maths.Right.Line, maths.Right.Column);
+                    return;
+                }
 
                 rightVal = variable.Value;
 

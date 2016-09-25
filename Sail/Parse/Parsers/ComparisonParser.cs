@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Sail.Parse.Expressions;
 using Sail.Lexical;
+using Sail.Error;
 
 namespace Sail.Parse.Parsers
 {
@@ -20,14 +17,20 @@ namespace Sail.Parse.Parsers
         public IExpression Parse(Parser parser, Token token, IExpression left)
         {
             if (!(left is ILiteralExpression || left is IdentifierExpression))
-                throw new Exception("Left hand side of comparison operator must be identifier or literal");
+            {
+                ErrorManager.CreateError("Left hand side of comparison operator must be variable name or literal!", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
             var right = parser.ParseExpression(GetPrecedence() - 1);
 
             if (!(right is ILiteralExpression || right is IdentifierExpression))
-                throw new Exception("Right hand side of comparison operator must be identifier or literal");
+            {
+                ErrorManager.CreateError("Right hand side of comparison operator must be variable name or literal!", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
-            return new ComparisonExpression(left, right, token.Type);
+            return new ComparisonExpression(token.Line, token.Column, left, right, token.Type);
         }
     }
 }

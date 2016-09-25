@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Sail.Parse.Expressions;
 using Sail.Lexical;
+using Sail.Error;
 
 namespace Sail.Parse.Parsers
 {
@@ -18,7 +16,10 @@ namespace Sail.Parse.Parsers
 
             var ifBlock = parser.ParseExpression(1);
             if (ifBlock == null)
-                throw new Exception("If statement is missing an if block");
+            {
+                ErrorManager.CreateError("If statement is missing a body! ({ ... })", ErrorType.Error, token.Line, token.Column);
+                return null;
+            }
 
             var elseIfBlocks = new List<ElseIfExpression>();
 
@@ -35,14 +36,9 @@ namespace Sail.Parse.Parsers
             ElseExpression elseExpr = null;
 
             if (parser.TokenStream.Peek().Type == TokenType.ELSE)
-            {
                 elseExpr = parser.ParseExpression(1) as ElseExpression;
 
-                if (elseExpr == null)
-                    throw new Exception("Else expression is not an else expression which is actually impossible");
-            }
-
-            return new IfExpression((BlockExpression)ifBlock, condition, elseIfBlocks, elseExpr);
+            return new IfExpression(token.Line, token.Column, (BlockExpression)ifBlock, condition, elseIfBlocks, elseExpr);
         }
     }
 }

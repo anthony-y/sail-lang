@@ -11,6 +11,7 @@ namespace Sail.Parse.Expressions
         public int Left { get; set; }
         public int Right { get; set; }
 
-        
+        public int Line { get; set; }
+        public int Column { get; set; }
     }
 }
