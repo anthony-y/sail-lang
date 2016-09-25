@@ -93,7 +93,7 @@ namespace Sail.Parse
         public Token Expect(TokenType type)
         {
             if (TokenStream.Peek().Type != type)
-                ErrorManager.CreateError($"[Line {TokenStream.Current.Line} Column {TokenStream.Current.Column}] Expected {type.ToString().ToLower()}!");
+                ErrorManager.CreateError($"Expected {type.ToString().ToLower()}!", ErrorType.Error, TokenStream.Current.Line, TokenStream.Current.Column);
 
             return TokenStream.Read();
         }
